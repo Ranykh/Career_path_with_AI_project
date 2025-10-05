@@ -1,55 +1,147 @@
-# Career_Path_With_AI
+# Career Path with AI — Personalized, Data-Driven Career Planning
 
-## Project Introduction:
-In today's rapidly evolving job market, finding the right career path can be daunting. That's why we've developed a personalized career pathing solution powered by advanced AI algorithms and comprehensive data analysis. 
-Inspired by insights from platforms like LinkedIn and Glassdoor, our project aims to answer a crucial question: Can we predict an individual's optimal career path using AI-driven analysis of their personal attributes and current job market data? 
-This project addresses the critical need for tailored career guidance in an increasingly complex professional landscape, offering individuals clarity and confidence in their career decisions.
+Predict optimal career trajectories from LinkedIn-style profiles using modern NLP (BERT embeddings), supervised classifiers, and unsupervised similarity matching over job market data (Glassdoor).
 
-![image](https://github.com/luay-github/Career_Path_With_AI/assets/81257335/c520aadf-931e-4c54-8671-0df8e488fefb)
+---
 
-## Data Collection and Integration:
-Our analysis relied mainly on the profiles dataset, using around 80,000 profiles in our predictive model (as our AI solution is specifically for LinkedIn users).
-A web scraping script was developed using Python's Selenium and BeautifulSoup libraries. The script navigates through Glassdoor's website, specifically targeting job listings.
-Selenium was utilized to automate the web browsing process, while BeautifulSoup facilitated the extraction of relevant information from the HTML content.
-Once the data is collected, it is organized into a Pandas and saved as a CSV file.
-The scraped data consists of job listings extracted from Glassdoor, focusing on the United States job market. 
-Each job listing contains six features: Company Name, Rating, Job Name, Job Salary, Industry and the Seniority Level Required. The Seniority Level Required serves as a key parameter for categorizing job listings into different career stages, including Internship, Entry Level, Mid Senior, Director, and Executive positions.
-Definition of Item:
-The total number of job listings (items) scraped, is approximately 4867 listings with six columns, including 'Company Name', 'Rating', 'Job Name', 'Job Salary', 'Industry', and 'Seniority Level Required'.
+## What this project does :
 
-## Data Analysis:
-**Analysis Techniques:**
+- **Predicts** an individual’s industry and seniority from their profile text.
+- **Recommends** a step-by-step career path (e.g., Internship → Entry → Mid → Senior → Director) tailored to profile attributes.
+- **Matches profiles** to relevant job opportunities using vector similarity (Word2Vec + cosine) enriched with company rating & salary signals.
 
-**Keyword Identification:** This technique was used to parse through the text in the 'position' column to identify specific keywords or phrases that are indicative of seniority levels or industries.
+---
 
-**Text Analysis:** Text analysis techniques, such as sentiment analysis or topic modeling, was applied to columns like 'about' and 'experience' to extract valuable insights.
+## Problem & Motivation
 
-**Statistical Analysis:** Statistical techniques, such as calculating distributions, help understand the distribution of education years and experiences among individuals. This analysis provides insights into common educational backgrounds and levels of professional experience within the dataset.
+Navigating career growth is hard and noisy. We ask:
+**Can AI infer where a person is today and recommend a credible, data-backed next step—up to a target seniority—using their profile plus live market signals?**
 
-**Word Frequency Analysis:** Analysing the frequency of words or phrases within the 'description' subcolumn of the 'experience' column can reveal recurring themes or topics across individuals' experiences.
+---
 
-**Categorical Analysis:** This technique involves categorizing and analyzing the causes listed in the 'cause' column from the 'volunteer_experience.' By aggregating and counting the occurrences of different causes, you can identify prevalent interests or values among individuals.
+<p align="center">
+  <a href="scripts/CV_surg_pose_estimation.pdf"><b>📄 Read the Full Report (PDF)</b></a>
+</p>
 
-**Feature Selection:**
+<table>
+  <tr>
+    <td><img src="assets/common_words_about.png" alt="Example 1" width="100%"></td>
+    <td><img src="assets/common_words_posts.png" alt="Example 2" width="100%"></td>
+  </tr>
+  <tr>
+    <td><img src="assets/faang_masters_1.png" alt="Example 3" width="100%"></td>
+    <td><img src="assets/masters_faang_2.png" alt="Example 4" width="100%"></td>
+  </tr>
+</table>
 
-**Position Column:** Keywords and patterns identified in the 'position' column serve as features for labeling train data. By selecting relevant keywords indicative of seniority levels or industries, you can create a categorical feature that contributes to predicting individuals' profiles accurately.
 
-**Education and Experience Columns:** The number of years of education and experiences are selected as direct indicators of expertise and seniority level. These numerical features provide quantitative measures of individuals' educational backgrounds and professional experiences, which are crucial for our predictive model.
 
-**Field Sub-column within Education:** Extracting information about subjects studied during academic journeys serves as features for understanding individuals' areas of expertise. 
+<p align="center">
+  <img src="assets/missing_data_paterns_heatmap.png" alt="Instrument pose prediction" width="520">
+</p>
 
-**Description Sub-column within Experience:** Common words or themes identified in the 'description' sub-column are selected as features to capture the essence of individuals' experiences.
+---
 
-**Cause Column from Volunteer Experience:** Causes individuals support through volunteering are selected as features to understand their interests thus predicting the field they belong to.
+## Architecture
 
-**Certifications Column:** Types of certifications held by individuals are selected as features to understand their fields of expertise and proficiency levels.
+### Data Sources
+- Profiles dataset (~80,000) for training & inference (LinkedIn-style schema).
+- Glassdoor job listings (~4,867, US) scraped via Selenium + BeautifulSoup → cleaned Pandas DataFrame → CSV.
 
-## AI Methodologies:
+<p align="center">
+  <img src="assets/data_snippet.png" alt="Instrument pose prediction" width="520">
+</p>
 
-Regarding the AI methodologies, starting with the deployment of web scraping techniques to aggregate job listings data from Glassdoor, which set the groundwork for our predictive models. The approach was characterized by an extensive data preprocessing phase, where techniques from natural language processing (NLP) were utilized to refine raw profile texts into structured, machine-learning-ready formats and that was done using BERT pre-trained model. This process involved feature engineering to identify and extract pertinent attributes from profiles, such as 'position', 'education', and 'experience', ensuring the data was primed for analysis. Our strategy embraced supervised learning model, logistic regression within an NLP pipeline which was the chosen predictive model after trying to employ different models, leveraging the power of BERT embeddings to deeply understand the context of profile texts for classifying the industry field and seniority level of individuals accurately.
-To complement the predictive modeling, our project applied unsupervised learning algorithms for the generation of optimal career paths, marking a significant leap in personalizing career guidance. By converting job names and individual positions into vectors via Word2Vec and applying cosine similarity, our methodology adeptly matched LinkedIn profiles with suitable job opportunities, considering factors such as job ratings and salaries. This nuanced approach not only demonstrated the seamless integration of different AI techniques to address complex career prediction challenges but also underscored the project's commitment to iterative model improvement and evaluation. Despite the inherent challenges in dealing with incomplete information and outlier profiles, our project's AI methodologies exhibited a robust framework for developing dynamic, AI-driven solutions for career path prediction, showcasing the potential for future advancements in personalized career development tools.
+### NLP & Feature Engineering
+- **BERT embeddings** on profile text fields (position, experience.description, education.field, about).
 
-## Evaluation and Results:
+- Keyword extraction from position; word frequency over experience.description.
+
+- Numeric features: years of **education & experience**.
+
+- Categorical signals: **certifications**, **volunteer causes**.
+
+### Models
+- **Supervised:** Logistic Regression on BERT embeddings for industry & seniority classification (chosen after model bake-off).
+
+- **Unsupervised:** Word2Vec + cosine similarity to match profile vectors ↔ job title vectors (re-ranked by company rating and salary, when available).
+
+### Career Path Generator
+- Stage-aware graph from current seniority to target (Director).
+- Each hop is a vetted role suggestion matched by similarity + market signals.
+
+---
+
+## Data Analysis (EDA + Insights)
+
+The full exploratory data analysis (EDA) lives in a companion repository:
+LinkedIn Data Analysis → https://github.com/Ranykh/Linkedin-Data-Analysis
+
+Two notebooks from that repo will also be added here for convenience:
+
+- notebooks/Linkedin_dataAnalysis.ipynb
+
+- notebooks/Linkedin_dataAnalysis_2.ipynb
+
+### What we analyzed
+
+- Keyword Identification (Position): Parsed position text for seniority/industry cues (e.g., “Intern”, “Junior”, “Senior”, “Data Analyst”, “ML Engineer”).
+
+- Text Analysis (About/Experience): Topic & word-frequency exploration to reveal common responsibilities and skills; selective sentiment where useful.
+
+- Statistical Profiling: Distributions of education years and experience years; outlier detection and sparsity checks.
+
+- Experience Word Frequency: High-signal terms in experience.description (e.g., “SQL”, “Python”, “ETL”, “Transformers”, “A/B”).
+
+- Volunteer Causes: Aggregated volunteer_experience.cause to capture personal interests that can correlate with industries.
+
+- Certifications: Normalized certification names/taxonomy to feed categorical features.
+
+### How the analysis informed modeling
+
+- **Labeling & Features:** Position-based keywords helped validate seniority labels; EDA guided inclusion of education_years and experience_years.
+
+- **Class Balance:** Identified skewed classes; informed sampling strategy and macro-/weighted-F1 reporting.
+
+- **Text Fields to Keep:** Confirmed experience.description and education.field are most predictive; retained about for incremental lift.
+
+- **Vocabulary Normalization:** Cleaned job titles & fields to improve Word2Vec and cosine similarity outcomes.
+
+---
+
+## Methodology Details
+
+### Text Processing
+
+- BERT embeddings for contextual understanding of profile text.
+
+- Keyword/phrase parsing on position for domain/seniority hints.
+
+- Topic/word frequency analysis on experience descriptions; selective sentiment where helpful.
+
+### Feature Set
+
+- Textual: BERT vectors, keyphrases, frequent terms.
+
+- Numeric: years of education, years of experience.
+
+- Categorical: certifications, volunteer causes, industries.
+
+### Evaluation
+
+- Per-class precision/recall/F1, macro/micro averages.
+
+- Qualitative review of recommended career paths for plausibility & progression logic.
+
+- Sensitivity to missing/partial profiles and outlier roles.
+
+Observed outcome: Paths generated are credible for common roles and typical profiles; degrades gracefully with incomplete data but remains interpretable.
+
+---
+
+
+
+## Evaluation and Results - Expanded:
 
 Our final algorithm has yielded promising results in line with our expectations. It generates a list comprising an optimal career path tailored for each individual based on various criteria such as their current position, seniority level, field of expertise, and the contents of their professional profile. Moreover, the algorithm operates dynamically, adjusting the career trajectory according to the individual's seniority level. For instance, when presented with a person at the "internship" seniority level, it constructs a career path extending to the highest echelon, namely "Director". 
 We have observed that a significant proportion of these career paths are highly suitable and remarkably accurate. We are pleased with the outcomes, considering our time limits and resources.
@@ -57,14 +149,12 @@ As with any model, particularly within the realm of artificial intelligence, our
 Furthermore, individuals occupying roles that are uncommon or considered outliers pose challenges to the model's predictive capabilities. Such cases may lead to deviations from expected outcomes, as these scenarios fall outside the scope of typical data patterns used for training the algorithm.
 These examples underscore the inherent limitations of our model and highlight the need for continued refinement and adaptation to address diverse and nuanced scenarios within the realm of career prediction.
 
+--- 
 
 ## Limitations and Reflection:
-Throughout our project, we encountered several constraints and challenges that shaped our approach and outcomes. One significant hurdle arose during the data collection phase, where we faced usage limits from the BrightData API for navigating pages on Glassdoor, restricting the amount of data we could scrape. Also we had to study fundamental concepts of web scraping, exploring tools like Selenium and BeautifulSoup, which we hadn't previously mastered. As a result, we confronted numerous errors while scraping Glassdoor, so we had to overcome these obstacles.
-Additionally, we grappled with computational limitations by the Azure server, preventing us from implementing algorithms reliant on heavy models. This constraint prompted us to explore more efficient algorithms that could deliver the desired results within the available computational resources. Moreover, restricted access to libraries and models on the server further challenged our implementation efforts, compelling us to seek alternative solutions and optimize our approach.
-Furthermore, given the size of the project, we recognized the importance of devising a well-structured schedule to maximize collaboration efficiency and align efforts towards our shared goal. This necessitated careful planning and coordination to ensure productive teamwork and timely progress.
-Moreover, the complexity of the provided LinkedIn datasets posed another obstacle, with many columns featuring nested sub-columns, requiring advanced data processing and management.
-Reflecting on these limitations, we acknowledge their influence on our project's outcomes. Despite encountering constraints such as resource availability, technological limitations, and time restrictions, we leveraged these challenges as opportunities for growth and innovation. By embracing flexibility, problem-solving, and effective teamwork, we successfully navigated these limitations to deliver a robust solution.
+We faced several constraints that shaped our approach. Data collection was limited by BrightData quotas on Glassdoor, and our ramp-up on Selenium/BeautifulSoup led to early scraping errors. On the compute side, Azure resource limits and restricted library access ruled out heavy models, pushing us toward more efficient algorithms and optimizations. The LinkedIn dataset’s nested structure also required non-trivial preprocessing. Despite these challenges, disciplined planning, flexible problem-solving, and strong collaboration let us deliver a robust solution within time and resource limits.
 
+--- 
 ## Conclusions:
 
 In conclusion, we have successfully achieved our objective of developing a personalized career pathing solution, integrating a diverse range of algorithms. 
@@ -79,6 +169,8 @@ Moreover, this project has provided invaluable experience in navigating real-wor
 ![Picture1](https://github.com/luay-github/Career_Path_With_AI/assets/81257335/21a0c431-657e-462c-b8f7-fa09267d30fd)
 
 
+---
+
 ## In order to run the notebook , you need to do the following :
 
 1) You have to have your own API in order to do the web-scraping
@@ -86,3 +178,12 @@ Moreover, this project has provided invaluable experience in navigating real-wor
 **Note:** we kept the API string empty in the scraping section
 
 2) You have to run the notebook in a Azure DataBricks enviornment
+
+---
+
+## Tech Stack
+**Python, Pandas, scikit-learn, Transformers (BERT), Gensim (Word2Vec), Selenium + BeautifulSoup, Matplotlib.**
+
+---
+
+This repo demonstrates end-to-end ML: data collection, EDA, NLP feature engineering, modeling, evaluation, and a recommendation layer. The linked analysis repo shows analytical rigor and the notebook here shows modeling depth and design decisions.
