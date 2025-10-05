@@ -1,0 +1,11 @@
+pandas
+numpy
+scikit-learn
+beautifulsoup4
+selenium
+tqdm
+matplotlib
+transformers
+torch
+gensim
+nltk
