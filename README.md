@@ -1,6 +1,6 @@
 # Career Path with AI — Personalized, Data-Driven Career Planning
 
-Predict optimal career trajectories from LinkedIn-style profiles using modern NLP (BERT embeddings), supervised classifiers, and unsupervised similarity matching over job market data (Glassdoor).
+Predicts and recommends high-confidence career moves from LinkedIn-style profiles by fusing BERT-powered NLP, supervised classifiers, and vector-based job matching over Glassdoor market signals (ratings, salary). Built for accuracy, interpretability, and real-world hiring context.
 
 ---
 
