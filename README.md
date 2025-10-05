@@ -19,9 +19,6 @@ Navigating career growth is hard and noisy. We ask:
 
 ---
 
-<p align="center">
-  <a href="scripts/CV_surg_pose_estimation.pdf"><b>📄 Read the Full Report (PDF)</b></a>
-</p>
 
 <table>
   <tr>
